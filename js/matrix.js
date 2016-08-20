@@ -3,6 +3,7 @@ MATRIX.JS
 */
 
 var soundBoard = [];
+var increment = 0;
 
 // tile constructor
 function Tile(x, y) {
@@ -34,33 +35,38 @@ $(document).ready(function() {
 
 
 	//create array to process board updates
-		var tileRow = [];
+	for (var i = 0; i<5; ++i) {
+		var tileCol = [];
 
 		for (var j = 0; j < 5; ++j) {
-			var t = new Tile(i, j);
-			tileRow.push(t);	//push adds to end of array
+			var t = new Tile(j, i);
+			tileCol.push(t);	//push adds to end of array
 		}
-		soundBoard.push(tileRow);
+		soundBoard.push(tileCol);
 	}
 
 	$('.tile').css("background-color", "#232344");
 
-
-	$('.tile').click(function(tile) {
+ 	$('.tile').click(function(tile) {
 		update(tile.target.id);
 	});
 
-
 	//EVENT LOOP
-	//  while(true) {
-
-	//  	// console.log("what up");
-	// 	$('#matrix').on('click', )
-
-	// }
-
-
+	console.log("calling reader");
+	var reader = setInterval(function(){
+		read(soundBoard, increment);
+		increment++;
+	}, 1000);
 });
+
+function read(soundBoard, increment) {
+	var col = increment % 5;
+	console.log("column to be updated: "+col);
+
+	var tileCol = soundBoard[col];
+
+
+}
 
 function update(id) {
 

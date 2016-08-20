@@ -22,7 +22,7 @@ tr {
 }
 
 /* individual tile css*/
-.tile {
+td {
 	width: 5pt;
 	height: 5pt;
 	background-color: #000000;	/*black*/
