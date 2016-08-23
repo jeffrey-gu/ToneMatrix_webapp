@@ -6,9 +6,9 @@ var soundBoard = [];
 var increment = 0;
 
 // tile constructor
-function Tile(x, y) {
-	this.x = x;
-	this.y = y;
+function Tile(col, row) {
+	this.col = col;
+	this.row = row;
 	this.isActive = false;
 }
 
@@ -23,8 +23,8 @@ $(document).ready(function() {
 
 		for (var j = 0; j < 5; ++j) {
 			var tile = document.createElement('td');
-			tile.className =  "tile col"+j;	//two classes: tile class, and column class (space delimited)
-			var id = i+","+j;
+			// tile.className =  "tile col"+j;	//two classes: tile class, and column class (space delimited)
+			var id = j+","+i;
 			tile.id = id;
 			row.appendChild(tile);
 		}
@@ -39,15 +39,15 @@ $(document).ready(function() {
 		var tileCol = [];
 
 		for (var j = 0; j < 5; ++j) {
-			var t = new Tile(j, i);
+			var t = new Tile(i, j);
 			tileCol.push(t);	//push adds to end of array
 		}
 		soundBoard.push(tileCol);
 	}
 
-	$('.tile').css("background-color", "#232344");
+	$('td').css("background-color", "#232344");
 
- 	$('.tile').click(function(tile) {
+ 	$('td').click(function(tile) {
 		update(tile.target.id);
 	});
 
@@ -65,7 +65,43 @@ function read(soundBoard, increment) {
 
 	var tileCol = soundBoard[col];
 
+	//iterate through the list, add any active tiles to a new list
+	//iterate through active tile list:
+	//for each tile, retrieve the corres. html element based on tile.x and tile.y
+		//then change class of that element to 'active' or sth
+	//use multiple elements selector to select all active elements
+	//change css accordingly
+	//use multiple elements selector again to add 'deactivated' class
+	//use multiple elements selector to remove the 'active' class
+		//OR: just select all td elements and remove all classes
 
+	var updateList = [];
+	var colLength = tileCol.length;
+	for (var i = 0; i<colLength; i++) {
+		var tile = tileCol[i];
+		if(tile.isActive) {
+			col = tile.col;
+			row = tile.row;
+			var id = col+","+row;
+
+			// console.log("retrieved id: " + id);
+
+			var htmlTile= document.getElementById(id);
+			htmlTile.className="active";
+		}
+	}
+
+	//make tiles highlight upon turn
+	$('.active').effect("highlight", {color:"#cccc00"}, 800);
+
+	// $('.active').animate({backgroundColor: '#cccc00'}, 750);
+	// $('.active').animate({backgroundColor: '#FFFFFF'}, 750);
+
+
+	//play sound here (call function from other js file?)
+
+	//remove highlight/class at end
+	$('td').removeClass("active");
 }
 
 function update(id) {
@@ -81,14 +117,14 @@ function update(id) {
 
 		//STATUS: split and attr reads in the position correctly!
 		// remember to convert id string to ints
-		var x = Number(position[0]);
-		var y = Number(position[1]);
+		var col = Number(position[0]);
+		var row = Number(position[1]);
 
-		console.log("tile prev status" + soundBoard[x][y].isActive);
-		soundBoard[x][y].isActive = !(soundBoard[x][y].isActive);
-		console.log("tile curr status:" + soundBoard[x][y].isActive);
+		console.log("tile prev status" + soundBoard[col][row].isActive);
+		soundBoard[col][row].isActive = !(soundBoard[col][row].isActive);
+		console.log("tile curr status:" + soundBoard[col][row].isActive);
 
-		if(soundBoard[x][y].isActive) {
+		if(soundBoard[col][row].isActive) {
 
 			tile.style.background = "#FFFFFF";
 			//change tile color to white
