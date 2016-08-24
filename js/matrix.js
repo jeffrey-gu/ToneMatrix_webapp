@@ -57,6 +57,7 @@ $(document).ready(function() {
 		read(soundBoard, increment);
 		increment++;
 	}, 1000);
+
 });
 
 function read(soundBoard, increment) {
@@ -88,6 +89,10 @@ function read(soundBoard, increment) {
 
 			var htmlTile= document.getElementById(id);
 			htmlTile.className="active";
+
+
+			//for passing into audio class?
+			updateList.push(id);
 		}
 	}
 
@@ -99,6 +104,7 @@ function read(soundBoard, increment) {
 
 
 	//play sound here (call function from other js file?)
+	playCol(updateList);
 
 	//remove highlight/class at end
 	$('td').removeClass("active");
